@@ -1,0 +1,62 @@
+{
+    "1": {
+        "englishName": "Dock",
+        "id": 1
+    },
+    "2": {
+        "englishName": "Pond",
+        "id": 2
+    },
+    "3": {
+        "englishName": "Beach",
+        "id": 3
+    },
+    "4": {
+        "englishName": "Uptown",
+        "id": 4
+    },
+    "5": {
+        "englishName": "Alley",
+        "id": 5
+    },
+    "6": {
+        "englishName": "Hotel",
+        "id": 6
+    },
+    "7": {
+        "englishName": "Avenue",
+        "id": 7
+    },
+    "8": {
+        "englishName": "Hospital",
+        "id": 8
+    },
+    "9": {
+        "englishName": "Temple",
+        "id": 9
+    },
+    "10": {
+        "englishName": "Archery Range",
+        "id": 10
+    },
+    "11": {
+        "englishName": "Cemetery",
+        "id": 11
+    },
+    "12": {
+        "englishName": "Forest",
+        "id": 12
+    },
+    "13": {
+        "englishName": "Factory",
+        "id": 13
+    },
+    "14": {
+        "englishName": "Chapel",
+        "id": 14
+    },
+    "15": {
+        "englishName": "School",
+        "id": 15
+    }
+}
