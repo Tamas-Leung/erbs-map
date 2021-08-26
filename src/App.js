@@ -1,5 +1,5 @@
-import BserMap from "./components/BserMap";
 import styled from "styled-components";
+import MapSideBarWrapper from "./components/MapSideBarWrapper";
 
 const Background = styled.div`
     background-color: hsl(0, 0%, 17.5%);
@@ -8,7 +8,7 @@ const Background = styled.div`
 function App() {
     return (
         <Background>
-            <BserMap />
+            <MapSideBarWrapper />
         </Background>
     );
 }

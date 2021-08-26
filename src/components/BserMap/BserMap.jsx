@@ -1,19 +1,18 @@
 import styled from "styled-components";
 import { MapInteractionCSS } from "react-map-interaction";
-import Boxes from "../../data/boxes.json";
-import Areas from "../../data/areas.json";
+import boxes from "../../data/boxes.json";
 
-const zoneColors = {
+export const zoneColors = {
     0: "hsl(0,0%, 75%)",
-    1: "hsl(0, 100%, 50%)",
-    2: "hsl(55, 100%, 50%)",
-    3: "hsl(120, 100%, 50%)",
-    4: "hsl(200, 100%, 50%)",
-    5: "hsl(304, 100%, 50%)",
+    1: "hsl(0, 100%, 45%)",
+    2: "hsl(55, 100%, 45%)",
+    3: "hsl(120, 100%, 45%)",
+    4: "hsl(200, 100%, 45%)",
+    5: "hsl(304, 100%, 45%)",
 };
 
 const StyledSvg = styled.svg`
-    width: 100vw;
+    width: 100%;
     height: calc(100vh - 4px);
 `;
 
@@ -25,15 +24,15 @@ const StyledText = styled.text`
     cursor: pointer;
 `;
 
-function BserMap() {
+function BserMap({ setSelectedItem }) {
     return (
-        <MapInteractionCSS maxScale={10} minScale={0.8}>
+        <MapInteractionCSS maxScale={6} minScale={0.95} showControls={true}>
             <StyledSvg
                 xmlns="http://www.w3.org/2000/svg"
                 xmlnsXlink="http://www.w3.org/1999/xlink"
                 viewBox="0 0 772 887"
             >
-                <title>ZoneMapping</title>
+                {/* <title>ZoneMapping</title> */}
                 <g id="Layer_1" data-name="Layer 1">
                     <image
                         width="772"
@@ -41,10 +40,13 @@ function BserMap() {
                         xlinkHref={process.env.PUBLIC_URL + "/MiniMap_01.png"}
                     />
                 </g>
-                {Boxes.map((box) => (
+                {boxes.map((box) => (
                     <StyledText
                         transform={`translate(${box.coords[0]} ${box.coords[1]} )`}
                         zone={box.zone}
+                        onClick={() => {
+                            setSelectedItem(box);
+                        }}
                     >
                         {box.quantity}
                     </StyledText>

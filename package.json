@@ -1,13 +1,19 @@
 {
     "name": "erbs-map",
+    "homepage": ".",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@stdlib/stats-base-dists-hypergeometric": "^0.0.5",
+        "@stdlib/stats-base-dists-hypergeometric-pmf": "^0.0.5",
         "@testing-library/jest-dom": "^5.14.1",
         "@testing-library/react": "^11.2.7",
         "@testing-library/user-event": "^12.8.3",
+        "@tippyjs/react": "^4.2.5",
+        "node-sass": "^6.0.1",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
+        "react-icons": "^4.2.0",
         "react-map-interaction": "^2.1.0",
         "react-scripts": "4.0.3",
         "styled-components": "^5.3.0",
@@ -19,6 +25,8 @@
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d build",
         "extract-points": "node  --experimental-json-modules ./src/scripts/newScripts/extractPoints.js"
     },
     "eslintConfig": {
@@ -39,5 +47,8 @@
             "last 1 safari version"
         ]
     },
-    "type": "module"
+    "type": "module",
+    "devDependencies": {
+        "gh-pages": "^3.2.3"
+    }
 }
