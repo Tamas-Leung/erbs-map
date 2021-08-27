@@ -10,14 +10,23 @@ const Wrapper = styled.div`
 
 function MapSideBarWrapper() {
     const [selectedItem, setSelectedItem] = useState({});
+    const [isColorEnabled, setColorEnabled] = useState(true);
+    const [isNumberEnabled, setNumberEnabled] = useState(true);
 
     return (
         <Wrapper>
             <BserMap
                 selectedItem={selectedItem}
                 setSelectedItem={setSelectedItem}
+                isColorEnabled={isColorEnabled}
+                isNumberEnabled={isNumberEnabled}
+                setColorEnabled={setColorEnabled}
+                setNumberEnabled={setNumberEnabled}
             />
-            <SideBar selectedItem={selectedItem} />
+            <SideBar
+                selectedItem={selectedItem}
+                isColorEnabled={isColorEnabled}
+            />
         </Wrapper>
     );
 }

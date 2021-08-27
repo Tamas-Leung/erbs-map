@@ -11,9 +11,10 @@ import { AiOutlineQuestionCircle } from "react-icons/ai";
 import "tippy.js/dist/tippy.css";
 
 const SidebarBox = styled.div`
-    width: 40%;
+    width: 25%;
     background-color: hsl(240, 5%, 30%);
     display: flex;
+    position: relative;
     padding: 0px 20px;
     flex-direction: column;
     align-items: start;
@@ -96,13 +97,12 @@ const QuestionTooltip = styled(AiOutlineQuestionCircle)`
     color: hsl(0, 0%, 60%);
 `;
 
-// const Tooltip = styled.div`
-//     color: hsl(0, 0%, 87%);
-//     background-color: hsl(0, 0%, 35%);
-//     padding: 0.5rem 1rem;
-// `;
+const Info = styled.h3`
+    margin: 0.4rem 0px;
+    color: hsl(0, 0%, 87%);
+`;
 
-function SideBar({ selectedItem }) {
+function SideBar({ selectedItem, isColorEnabled }) {
     const area = areas[selectedItem.area];
     const itemCount = areaItemCount[selectedItem.area];
     let areaItem = 0;
@@ -136,7 +136,7 @@ function SideBar({ selectedItem }) {
     return (
         <SidebarBox>
             <Header>ERBS Map</Header>
-            {selectedItem ? (
+            {selectedItem.area ? (
                 selectedItem.area && (
                     <>
                         <Subtitle>{area.englishName}</Subtitle>
@@ -170,7 +170,13 @@ function SideBar({ selectedItem }) {
                                     return <BserItem item={item} quantity={count} />;
                                 })}
                             </ItemHolderBox> */}
-                        <Subtitle color={zoneColors[selectedItem.zone]}>
+                        <Subtitle
+                            color={
+                                isColorEnabled
+                                    ? zoneColors[selectedItem.zone]
+                                    : null
+                            }
+                        >
                             {zoneName}
                         </Subtitle>
                         <Text>Total Items: {zoneItem[selectedItem.zone]}</Text>
@@ -257,7 +263,7 @@ function SideBar({ selectedItem }) {
                     </>
                 )
             ) : (
-                <></>
+                <Info>Select a box to start</Info>
             )}
         </SidebarBox>
     );

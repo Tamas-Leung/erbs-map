@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import codeToName from "../../data/codeToName.json";
-import Tippy from "@tippyjs/react";
 
 const GradeColor = {
     Common: {
