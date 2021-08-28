@@ -5,7 +5,7 @@ import { useState } from "react";
 import Modal from "../Modal";
 
 export const zoneColors = {
-    0: "hsl(0,0%, 75%)",
+    0: "hsl(0,0%, 85%)",
     1: "hsl(0, 100%, 45%)",
     2: "hsl(55, 100%, 45%)",
     3: "hsl(120, 100%, 45%)",
