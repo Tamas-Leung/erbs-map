@@ -2,10 +2,15 @@ import SideBar from "../SideBar";
 import BserMap from "../BserMap";
 import styled from "styled-components";
 import { useState } from "react";
+import { device } from "../../utils/device";
 
 const Wrapper = styled.div`
     display: flex;
     text-align: center;
+
+    @media ${device.mobileLMax} {
+        flex-direction: column;
+    }
 `;
 
 function MapSideBarWrapper() {

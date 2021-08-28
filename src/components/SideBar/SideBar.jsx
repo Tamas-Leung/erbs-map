@@ -9,6 +9,7 @@ import { zoneColors } from "../BserMap/BserMap";
 import Tippy from "@tippyjs/react";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import "tippy.js/dist/tippy.css";
+import { device } from "../../utils/device";
 
 const SidebarBox = styled.div`
     width: 25%;
@@ -20,6 +21,11 @@ const SidebarBox = styled.div`
     align-items: start;
     height: 100vh;
     overflow-y: auto;
+
+    @media ${device.mobileLMax} {
+        width: 100%;
+        height: 40vh;
+    }
 
     /* width */
     ::-webkit-scrollbar {
@@ -40,17 +46,6 @@ const SidebarBox = styled.div`
     ::-webkit-scrollbar-thumb:hover {
         background: hsl(0, 0%, 60%);
     }
-    /* position: relative;
-    ::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        width: 10px;
-        height: 50px;
-        background-color: hsl(240, 5%, 30%);
-    } */
 `;
 
 const Header = styled.h1`

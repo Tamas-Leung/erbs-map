@@ -3,6 +3,7 @@ import { MapInteractionCSS } from "react-map-interaction";
 import boxes from "../../data/boxes.json";
 import { useState } from "react";
 import Modal from "../Modal";
+import { device } from "../../utils/device";
 
 export const zoneColors = {
     0: "hsl(0,0%, 85%)",
@@ -16,6 +17,9 @@ export const zoneColors = {
 const StyledSvg = styled.svg`
     width: 100%;
     height: calc(100vh - 4px);
+    @media ${device.mobileLMax} {
+        height: calc(60vh - 4px);
+    }
 `;
 
 const StyledText = styled.text`
@@ -79,6 +83,7 @@ const Credits = styled.div`
 
 const CreditsBox = styled.div`
     width: 40rem;
+    max-width: 90vw;
     padding: 2rem;
     border-radius: 0.5rem;
     background-color: hsl(240, 5%, 30%);
@@ -170,6 +175,9 @@ function BserMap({
                                 zone={box.zone}
                                 isColorEnabled={isColorEnabled}
                                 onClick={() => {
+                                    setSelectedItem(box);
+                                }}
+                                onTouchEnd={() => {
                                     setSelectedItem(box);
                                 }}
                             >
