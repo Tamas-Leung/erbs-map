@@ -1,16 +1,6 @@
 import ReactDom from "react-dom";
 import styled from "styled-components";
 
-const OVERLAY_STYLES = {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "hsla(0, 0%, 0%, .3)",
-    zIndex: 1000,
-};
-
 const StyledModal = styled.div`
     position: fixed;
     top: 50%;

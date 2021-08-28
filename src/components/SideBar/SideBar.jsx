@@ -179,87 +179,198 @@ function SideBar({ selectedItem, isColorEnabled }) {
                         >
                             {zoneName}
                         </Subtitle>
-                        <Text>Total Items: {zoneItem[selectedItem.zone]}</Text>
-                        <Text>Extras: {zoneLeftovers[selectedItem.zone]}</Text>
 
-                        <SubSubtitleWithQuestionTooltip>
-                            <SubSubTitle>Item Chance in Zone</SubSubTitle>
-                            <Tippy
-                                arrow={true}
-                                content={
-                                    <span>
-                                        All percentages are estimates due to the
-                                        complex nature of the boxes. Zones with
-                                        higher number of boxes will have higher
-                                        chances than the estimate
-                                    </span>
-                                }
-                            >
-                                <div>
-                                    <QuestionTooltip />
-                                </div>
-                            </Tippy>
-                        </SubSubtitleWithQuestionTooltip>
+                        {selectedItem.zone ? (
+                            <>
+                                <Text>
+                                    Items in Zone: {zoneItem[selectedItem.zone]}
+                                </Text>
+                                <Text>
+                                    Extras: {zoneLeftovers[selectedItem.zone]}
+                                </Text>
 
-                        <ItemHolderBox>
-                            {Object.keys(itemCount).map((item) => {
-                                const count = itemCount[item] % 5;
+                                <SubSubtitleWithQuestionTooltip>
+                                    <SubSubTitle>
+                                        Item Chance in Zone
+                                    </SubSubTitle>
+                                    <Tippy
+                                        arrow={true}
+                                        content={
+                                            <span>
+                                                All percentages are estimates
+                                                due to the complex nature of the
+                                                boxes. Zones with higher number
+                                                of boxes will have higher
+                                                chances than the estimate
+                                            </span>
+                                        }
+                                    >
+                                        <div>
+                                            <QuestionTooltip />
+                                        </div>
+                                    </Tippy>
+                                </SubSubtitleWithQuestionTooltip>
 
-                                const mandatory =
-                                    selectedItem.zone !== 0
-                                        ? Math.floor(itemCount[item] / 5)
-                                        : 0;
+                                <ItemHolderBox>
+                                    {Object.keys(itemCount).map((item) => {
+                                        const count = itemCount[item] % 5;
 
-                                if (count === 0) return <></>;
+                                        const mandatory =
+                                            selectedItem.zone !== 0
+                                                ? Math.floor(
+                                                      itemCount[item] / 5
+                                                  )
+                                                : 0;
 
-                                const chances = {};
+                                        if (count === 0) return <></>;
 
-                                if (mandatory > 0) chances[mandatory] = 100;
+                                        const chances = {};
 
-                                let currentExtra = 0;
+                                        if (mandatory > 0)
+                                            chances[mandatory] = 100;
 
-                                while (true) {
-                                    currentExtra++;
-                                    const chance =
-                                        1 -
-                                        cdf(
-                                            currentExtra,
-                                            leftoverCount,
-                                            count,
-                                            zoneLeftovers[selectedItem.zone]
-                                        ) +
-                                        pmf(
-                                            currentExtra,
-                                            leftoverCount,
-                                            count,
-                                            zoneLeftovers[selectedItem.zone]
-                                        );
+                                        let currentExtra = 0;
 
-                                    if (chance <= 0.01 || currentExtra >= 4)
-                                        break;
-
-                                    chances[currentExtra + mandatory] = (
-                                        chance * 100
-                                    ).toFixed(0);
-                                }
-
-                                return (
-                                    <ItemWithPercentages>
-                                        <BserItem item={item} />
-                                        {Object.keys(chances).map(
-                                            (quantity) => {
-                                                return (
-                                                    <Text>
-                                                        {quantity}:{" "}
-                                                        {chances[quantity]}%
-                                                    </Text>
+                                        while (true) {
+                                            currentExtra++;
+                                            const chance =
+                                                1 -
+                                                cdf(
+                                                    currentExtra,
+                                                    leftoverCount,
+                                                    count,
+                                                    zoneLeftovers[
+                                                        selectedItem.zone
+                                                    ]
+                                                ) +
+                                                pmf(
+                                                    currentExtra,
+                                                    leftoverCount,
+                                                    count,
+                                                    zoneLeftovers[
+                                                        selectedItem.zone
+                                                    ]
                                                 );
-                                            }
-                                        )}
-                                    </ItemWithPercentages>
-                                );
-                            })}
-                        </ItemHolderBox>
+
+                                            if (
+                                                chance <= 0.01 ||
+                                                currentExtra >= 4
+                                            )
+                                                break;
+
+                                            chances[currentExtra + mandatory] =
+                                                (chance * 100).toFixed(0);
+                                        }
+
+                                        return (
+                                            <ItemWithPercentages>
+                                                <BserItem item={item} />
+                                                {Object.keys(chances).map(
+                                                    (quantity) => {
+                                                        return (
+                                                            <Text>
+                                                                {quantity}:
+                                                                {
+                                                                    chances[
+                                                                        quantity
+                                                                    ]
+                                                                }
+                                                                %
+                                                            </Text>
+                                                        );
+                                                    }
+                                                )}
+                                            </ItemWithPercentages>
+                                        );
+                                    })}
+                                </ItemHolderBox>
+                            </>
+                        ) : (
+                            <>
+                                <Text>
+                                    Leftovers: {zoneItem[selectedItem.zone]}
+                                </Text>
+                                <SubSubtitleWithQuestionTooltip>
+                                    <SubSubTitle>
+                                        Item Chance in Selected Box
+                                    </SubSubTitle>
+                                    <Tippy
+                                        arrow={true}
+                                        content={
+                                            <span>
+                                                All percentages are estimates
+                                                due to the complex nature of the
+                                                boxes.
+                                            </span>
+                                        }
+                                    >
+                                        <div>
+                                            <QuestionTooltip />
+                                        </div>
+                                    </Tippy>
+                                </SubSubtitleWithQuestionTooltip>
+                                <ItemHolderBox>
+                                    {Object.keys(itemCount).map((item) => {
+                                        const count = itemCount[item] % 5;
+
+                                        if (count === 0) return <></>;
+
+                                        const chances = {};
+
+                                        let currentExtra = 0;
+
+                                        while (true) {
+                                            currentExtra++;
+                                            const chance =
+                                                1 -
+                                                cdf(
+                                                    currentExtra,
+                                                    leftoverCount,
+                                                    count,
+                                                    selectedItem.quantity
+                                                ) +
+                                                pmf(
+                                                    currentExtra,
+                                                    leftoverCount,
+                                                    count,
+                                                    selectedItem.quantity
+                                                );
+
+                                            if (
+                                                chance <= 0.01 ||
+                                                currentExtra >= 4
+                                            )
+                                                break;
+
+                                            chances[currentExtra] = (
+                                                chance * 100
+                                            ).toFixed(0);
+                                        }
+
+                                        return (
+                                            <ItemWithPercentages>
+                                                <BserItem item={item} />
+                                                {Object.keys(chances).map(
+                                                    (quantity) => {
+                                                        return (
+                                                            <Text>
+                                                                {quantity}:
+                                                                {
+                                                                    chances[
+                                                                        quantity
+                                                                    ]
+                                                                }
+                                                                %
+                                                            </Text>
+                                                        );
+                                                    }
+                                                )}
+                                            </ItemWithPercentages>
+                                        );
+                                    })}
+                                </ItemHolderBox>
+                            </>
+                        )}
                     </>
                 )
             ) : (
