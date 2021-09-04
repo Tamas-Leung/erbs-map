@@ -26,26 +26,6 @@ const SidebarBox = styled.div`
         width: 100%;
         height: 40vh;
     }
-
-    /* width */
-    ::-webkit-scrollbar {
-        width: 10px;
-    }
-
-    /* Track */
-    ::-webkit-scrollbar-track {
-        background: hsl(0, 0%, 90%);
-    }
-
-    /* Handle */
-    ::-webkit-scrollbar-thumb {
-        background: hsl(0, 0%, 55%);
-    }
-
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
-        background: hsl(0, 0%, 60%);
-    }
 `;
 
 const Header = styled.h1`
@@ -216,8 +196,6 @@ function SideBar({ selectedItem, isColorEnabled }) {
                                                       itemCount[item] / 5
                                                   )
                                                 : 0;
-
-                                        if (count === 0) return <></>;
 
                                         const chances = {};
 
