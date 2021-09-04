@@ -4,6 +4,7 @@ import boxes from "../../data/boxes.json";
 import { useState } from "react";
 import Modal from "../Modal";
 import { device } from "../../utils/device";
+import UpdateHistory from "../UpdateHistory";
 
 export const zoneColors = {
     0: "hsl(0,0%, 85%)",
@@ -81,6 +82,11 @@ const Credits = styled.div`
     }
 `;
 
+const HistoryText = styled(Credits)`
+    top: 0.5rem;
+    bottom: auto;
+`;
+
 const CreditsBox = styled.div`
     width: 40rem;
     max-width: 90vw;
@@ -105,6 +111,7 @@ function BserMap({
     setNumberEnabled,
 }) {
     const [isCreditsOpen, setIsCreditsOpen] = useState(false);
+    const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
     return (
         <MapDiv>
@@ -129,7 +136,13 @@ function BserMap({
                     </p>
                 </CreditsBox>
             </Modal>
+            <Modal open={isHistoryOpen} onClose={() => setIsHistoryOpen(false)}>
+                <UpdateHistory />
+            </Modal>
             <Credits onClick={() => setIsCreditsOpen(true)}>Credits</Credits>
+            <HistoryText onClick={() => setIsHistoryOpen(true)}>
+                Last Updated: Patch 0.40.0
+            </HistoryText>
             <SettingBox>
                 <CheckboxWithText>
                     <Checkbox
