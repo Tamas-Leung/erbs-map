@@ -9,6 +9,7 @@ Check it out at: https://tamas-leung.github.io/erbs-map/
 - Map view of Lumia Island
 - Color coded Zone mapping
 - Zone item probablity estimates
+- Mobile Styling
 
 ## Preview
 
