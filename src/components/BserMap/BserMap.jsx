@@ -141,7 +141,7 @@ function BserMap({
             </Modal>
             <Credits onClick={() => setIsCreditsOpen(true)}>Credits</Credits>
             <HistoryText onClick={() => setIsHistoryOpen(true)}>
-                Last Updated: Patch 0.40.0
+                Last Updated: Patch 0.41.0
             </HistoryText>
             <SettingBox>
                 <CheckboxWithText>

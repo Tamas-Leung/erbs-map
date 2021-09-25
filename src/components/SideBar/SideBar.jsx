@@ -172,11 +172,12 @@ function SideBar({ selectedItem, isColorEnabled }) {
                                         arrow={true}
                                         content={
                                             <span>
-                                                All percentages are estimates
-                                                due to the complex nature of the
-                                                boxes. Zones with higher number
-                                                of boxes will have higher
-                                                chances than the estimate
+                                                All percentages are{" "}
+                                                <b>estimates</b> due to the
+                                                complex nature of the boxes.
+                                                Zones with higher number of
+                                                boxes will have higher chances
+                                                than the estimate
                                             </span>
                                         }
                                     >
@@ -271,9 +272,11 @@ function SideBar({ selectedItem, isColorEnabled }) {
                                         arrow={true}
                                         content={
                                             <span>
-                                                All percentages are estimates
-                                                due to the complex nature of the
-                                                boxes.
+                                                All percentages are{" "}
+                                                <b>estimates</b> due to the
+                                                complex nature of the boxes.
+                                                Expect the chance to be higher
+                                                than listed.
                                             </span>
                                         }
                                     >
@@ -311,7 +314,7 @@ function SideBar({ selectedItem, isColorEnabled }) {
 
                                             if (
                                                 chance <= 0.01 ||
-                                                currentExtra >= 4
+                                                currentExtra >= 2
                                             )
                                                 break;
 

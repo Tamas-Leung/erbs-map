@@ -32,6 +32,14 @@ const ChangesListItem = styled.li`
 
 const historyData = [
     {
+        date: "2021/09/16",
+        changes: ["Updated to Patch 0.41.0"],
+    },
+    {
+        date: "2021/09/08",
+        changes: ["Changed percentage calculations"],
+    },
+    {
         date: "2021/09/04",
         changes: [
             "Fixed Bandage/Coffee/Garlic images",
