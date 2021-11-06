@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import { MapInteractionCSS } from "react-map-interaction";
 import boxes from "../../data/boxes.json";
-import { useState } from "react";
+import animals from "../../data/animals.json";
+import { useState, useContext } from "react";
 import Modal from "../Modal";
 import { device } from "../../utils/device";
 import UpdateHistory from "../UpdateHistory";
+import SettingsContext from "../Context/SettingsContext";
 
 export const zoneColors = {
     0: "hsl(0,0%, 85%)",
@@ -103,13 +105,10 @@ const CreditLink = styled.a`
     color: hsl(0, 0%, 87%);
 `;
 
-function BserMap({
-    setSelectedItem,
-    isNumberEnabled,
-    isColorEnabled,
-    setColorEnabled,
-    setNumberEnabled,
-}) {
+function BserMap({ setSelectedItem }) {
+    const { settings, toggleAnimals, toggleCollectables, toggleSpawns } =
+        useContext(SettingsContext);
+
     const [isCreditsOpen, setIsCreditsOpen] = useState(false);
     const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
@@ -141,29 +140,49 @@ function BserMap({
             </Modal>
             <Credits onClick={() => setIsCreditsOpen(true)}>Credits</Credits>
             <HistoryText onClick={() => setIsHistoryOpen(true)}>
-                Last Updated: Patch 0.41.0
+                Last Updated: Patch 0.44.0
             </HistoryText>
             <SettingBox>
+                {/* <CheckboxWithText>
+                    <Checkbox
+                        type="checkbox"
+                        checked={settings.collectables}
+                        onChange={toggleCollectables}
+                    ></Checkbox>
+                    <CheckboxText>Collectables</CheckboxText>
+                </CheckboxWithText>
                 <CheckboxWithText>
                     <Checkbox
                         type="checkbox"
-                        checked={isNumberEnabled}
-                        onChange={() => {
-                            setNumberEnabled(!isNumberEnabled);
-                        }}
+                        checked={settings.spawns}
+                        onChange={toggleSpawns}
+                    ></Checkbox>
+                    <CheckboxText>Spawns</CheckboxText>
+                </CheckboxWithText> */}
+                <CheckboxWithText>
+                    <Checkbox
+                        type="checkbox"
+                        checked={settings.animals}
+                        onChange={toggleAnimals}
+                    ></Checkbox>
+                    <CheckboxText>Animals</CheckboxText>
+                </CheckboxWithText>
+                {/* <CheckboxWithText>
+                    <Checkbox
+                        type="checkbox"
+                        checked={settings.numbers}
+                        onChange={toggleNumbers}
                     ></Checkbox>
                     <CheckboxText>Numbers</CheckboxText>
                 </CheckboxWithText>
                 <CheckboxWithText>
                     <Checkbox
                         type="checkbox"
-                        checked={isColorEnabled}
-                        onChange={() => {
-                            setColorEnabled(!isColorEnabled);
-                        }}
+                        checked={settings.color}
+                        onChange={toggleColor}
                     ></Checkbox>
                     <CheckboxText>Colors</CheckboxText>
-                </CheckboxWithText>
+                </CheckboxWithText> */}
             </SettingBox>
             <MapInteractionCSS maxScale={6} minScale={0.95} showControls={true}>
                 <StyledSvg
@@ -181,12 +200,25 @@ function BserMap({
                             }
                         />
                     </g>
+                    {settings.animals &&
+                        animals.map((animal) => (
+                            <image
+                                xlinkHref={
+                                    process.env.PUBLIC_URL +
+                                    `/images/animals/${animal.code}.png`
+                                }
+                                x={parseFloat(animal.coords[0]) - 25 / 2}
+                                y={parseFloat(animal.coords[1]) - 25 / 2}
+                                width={25}
+                                height={25}
+                            />
+                        ))}
                     {boxes.map((box) =>
-                        isNumberEnabled ? (
+                        settings.numbers ? (
                             <StyledText
                                 transform={`translate(${box.coords[0]} ${box.coords[1]} )`}
                                 zone={box.zone}
-                                isColorEnabled={isColorEnabled}
+                                isColorEnabled={settings.color}
                                 onClick={() => {
                                     setSelectedItem(box);
                                 }}
@@ -201,7 +233,7 @@ function BserMap({
                                 cx={parseFloat(box.coords[0]) + 3}
                                 cy={parseFloat(box.coords[1]) - 3}
                                 r="2.5"
-                                isColorEnabled={isColorEnabled}
+                                isColorEnabled={settings.color}
                                 zone={box.zone}
                                 onClick={() => {
                                     setSelectedItem(box);

@@ -32,6 +32,19 @@ const ChangesListItem = styled.li`
 
 const historyData = [
     {
+        date: "2021/11/06",
+        changes: [
+            "Updated to Patch 0.44.0",
+            "Fixed School and Forest Loot Maps",
+            "Added Animals Toggle",
+            "Removed Color and number toggles",
+        ],
+    },
+    {
+        date: "2021/09/30",
+        changes: ["Updated to Patch 0.42.0"],
+    },
+    {
         date: "2021/09/16",
         changes: ["Updated to Patch 0.41.0"],
     },

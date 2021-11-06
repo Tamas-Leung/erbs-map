@@ -10,6 +10,8 @@ import Tippy from "@tippyjs/react";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import "tippy.js/dist/tippy.css";
 import { device } from "../../utils/device";
+import SettingsContext from "../Context/SettingsContext";
+import { useContext } from "react";
 
 const SidebarBox = styled.div`
     width: 25%;
@@ -77,7 +79,9 @@ const Info = styled.h3`
     color: hsl(0, 0%, 87%);
 `;
 
-function SideBar({ selectedItem, isColorEnabled }) {
+function SideBar({ selectedItem }) {
+    const { settings } = useContext(SettingsContext);
+
     const area = areas[selectedItem.area];
     const itemCount = areaItemCount[selectedItem.area];
     let areaItem = 0;
@@ -147,13 +151,18 @@ function SideBar({ selectedItem, isColorEnabled }) {
                             </ItemHolderBox> */}
                         <Subtitle
                             color={
-                                isColorEnabled
+                                settings.color
                                     ? zoneColors[selectedItem.zone]
                                     : null
                             }
                         >
                             {zoneName}
                         </Subtitle>
+                        {/* <Subtitle>
+                            {selectedItem.coords[0] +
+                                ", " +
+                                selectedItem.coords[1]}
+                        </Subtitle> */}
 
                         {selectedItem.zone ? (
                             <>
