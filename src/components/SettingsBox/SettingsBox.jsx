@@ -27,13 +27,20 @@ const CheckboxWithText = styled.div`
 
 const CheckboxText = styled.p`
     margin-left: 0.25rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
 `;
 
 const NestedCheckboxes = styled.div`
     margin-left: 1rem;
 `;
 
-const Checkbox = styled.input``;
+const Checkbox = styled.input`
+    cursor: pointer;
+`;
 
 function SettingsBox() {
     const { settings, toggleSetting } = useContext(SettingsContext);
@@ -43,11 +50,14 @@ function SettingsBox() {
 
     return (
         <SettingBox>
-            <CheckboxWithText>
+            <CheckboxWithText
+                onClick={() => {
+                    toggleSetting("collectables", "state");
+                }}
+            >
                 <Checkbox
                     type="checkbox"
                     checked={settings.collectables.state}
-                    onChange={() => toggleSetting("collectables", "state")}
                 ></Checkbox>
                 <CheckboxArrow
                     active={collectablesExpanded}
@@ -67,13 +77,14 @@ function SettingsBox() {
                         "401209",
                         "401208",
                     ].map((collectable) => (
-                        <CheckboxWithText>
+                        <CheckboxWithText
+                            onClick={() => {
+                                toggleSetting("collectables", collectable);
+                            }}
+                        >
                             <Checkbox
                                 type="checkbox"
                                 checked={settings.collectables[collectable]}
-                                onChange={() =>
-                                    toggleSetting("collectables", collectable)
-                                }
                             ></Checkbox>
                             <CheckboxText>
                                 {codeToName[collectable]}
@@ -83,19 +94,17 @@ function SettingsBox() {
                 </NestedCheckboxes>
             )}
 
-            <CheckboxWithText>
+            <CheckboxWithText onClick={() => toggleSetting("spawns", "state")}>
                 <Checkbox
                     type="checkbox"
                     checked={settings.spawns.state}
-                    onChange={() => toggleSetting("spawns", "state")}
                 ></Checkbox>
                 <CheckboxText>Spawns</CheckboxText>
             </CheckboxWithText>
-            <CheckboxWithText>
+            <CheckboxWithText onClick={() => toggleSetting("animals", "state")}>
                 <Checkbox
                     type="checkbox"
                     checked={settings.animals.state}
-                    onChange={() => toggleSetting("animals", "state")}
                 ></Checkbox>
                 <CheckboxArrow
                     active={animalsExpanded}
@@ -108,24 +117,22 @@ function SettingsBox() {
             {animalsExpanded && (
                 <NestedCheckboxes>
                     {["1", "2", "3", "4", "5", "6", "7", "8"].map((animal) => (
-                        <CheckboxWithText>
+                        <CheckboxWithText
+                            onClick={() => toggleSetting("animals", animal)}
+                        >
                             <Checkbox
                                 type="checkbox"
                                 checked={settings.animals[animal]}
-                                onChange={() =>
-                                    toggleSetting("animals", animal)
-                                }
                             ></Checkbox>
                             <CheckboxText>{animalName[animal]}</CheckboxText>
                         </CheckboxWithText>
                     ))}
                 </NestedCheckboxes>
             )}
-            <CheckboxWithText>
+            <CheckboxWithText onClick={() => toggleSetting("boxes", "state")}>
                 <Checkbox
                     type="checkbox"
                     checked={settings.boxes.state}
-                    onChange={() => toggleSetting("boxes", "state")}
                 ></Checkbox>
                 <CheckboxText>Boxes</CheckboxText>
             </CheckboxWithText>

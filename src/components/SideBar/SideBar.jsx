@@ -179,9 +179,10 @@ const CreateSideBarSection = ({ selectedItem }) => {
                                 content={
                                     <span>
                                         All percentages are <b>estimates</b> due
-                                        to the complex nature of the boxes.
-                                        Zones with higher number of boxes will
-                                        have higher chances than the estimate
+                                        to the complex nature of the boxes. They
+                                        are all <b>inaccurate</b> and should
+                                        only be used as an idea of what the
+                                        actual chance is
                                     </span>
                                 }
                             >
