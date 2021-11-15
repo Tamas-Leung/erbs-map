@@ -2,11 +2,15 @@ import styled from "styled-components";
 import { MapInteractionCSS } from "react-map-interaction";
 import boxes from "../../data/boxes.json";
 import animals from "../../data/animals.json";
-import { useState, useContext } from "react";
+import spawns from "../../data/spawns.json";
+import collectables from "../../data/collectables.json";
+import { useState, useContext, useRef } from "react";
 import Modal from "../Modal";
 import { device } from "../../utils/device";
 import UpdateHistory from "../UpdateHistory";
 import SettingsContext from "../Context/SettingsContext";
+import SettingsBox from "../SettingsBox";
+import { itemTypes } from "../../enums/itemTypes";
 
 export const zoneColors = {
     0: "hsl(0,0%, 85%)",
@@ -36,36 +40,16 @@ const StyledText = styled.text`
 
 const StyledCircle = styled.circle`
     fill: ${({ isColorEnabled, zone }) =>
-        isColorEnabled ? zoneColors[zone] : "hsl(0, 0%, 75%)"};
+        isColorEnabled ? zoneColors[zone] : "hsl(0, 0%, 0%)"};
     cursor: pointer;
     stroke-width: 0.2px;
-    stroke: hsl(0, 0%, 25%);
+    stroke: ${({ isBorderColorEnabled, zone }) =>
+        isBorderColorEnabled ? zoneColors[zone] : "hsl(0, 0%, 25%)"};
 `;
 
-const SettingBox = styled.div`
-    position: absolute;
-    right: 1rem;
-    bottom: 1rem;
-    background-color: hsl(240, 5%, 30%);
-    color: hsl(0, 0%, 87%);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
-    z-index: 2;
+const StyledImage = styled.image`
+    cursor: pointer;
 `;
-
-const CheckboxWithText = styled.div`
-    display: flex;
-    align-items: center;
-`;
-
-const CheckboxText = styled.p`
-    margin-left: 0.25rem;
-`;
-
-const Checkbox = styled.input``;
 
 const MapDiv = styled.div`
     position: relative;
@@ -106,11 +90,28 @@ const CreditLink = styled.a`
 `;
 
 function BserMap({ setSelectedItem }) {
-    const { settings, toggleAnimals, toggleCollectables, toggleSpawns } =
-        useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
 
     const [isCreditsOpen, setIsCreditsOpen] = useState(false);
     const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+
+    const svgRef = useRef(null);
+
+    const getCursorPoint = (event) => {
+        let cursorPoint = svgRef.current.createSVGPoint();
+        cursorPoint.x = event.clientX;
+        cursorPoint.y = event.clientY;
+        cursorPoint = cursorPoint.matrixTransform(
+            svgRef.current.getScreenCTM().inverse()
+        );
+        cursorPoint.x = Math.round(cursorPoint.x);
+        cursorPoint.y = Math.round(cursorPoint.y);
+
+        //For Dev purposes only
+        // console.log(cursorPoint);
+
+        return cursorPoint;
+    };
 
     return (
         <MapDiv>
@@ -138,59 +139,19 @@ function BserMap({ setSelectedItem }) {
             <Modal open={isHistoryOpen} onClose={() => setIsHistoryOpen(false)}>
                 <UpdateHistory />
             </Modal>
+            <SettingsBox />
             <Credits onClick={() => setIsCreditsOpen(true)}>Credits</Credits>
             <HistoryText onClick={() => setIsHistoryOpen(true)}>
-                Last Updated: Patch 0.44.0
+                Last Updated: Patch 0.45.0
             </HistoryText>
-            <SettingBox>
-                {/* <CheckboxWithText>
-                    <Checkbox
-                        type="checkbox"
-                        checked={settings.collectables}
-                        onChange={toggleCollectables}
-                    ></Checkbox>
-                    <CheckboxText>Collectables</CheckboxText>
-                </CheckboxWithText>
-                <CheckboxWithText>
-                    <Checkbox
-                        type="checkbox"
-                        checked={settings.spawns}
-                        onChange={toggleSpawns}
-                    ></Checkbox>
-                    <CheckboxText>Spawns</CheckboxText>
-                </CheckboxWithText> */}
-                <CheckboxWithText>
-                    <Checkbox
-                        type="checkbox"
-                        checked={settings.animals}
-                        onChange={toggleAnimals}
-                    ></Checkbox>
-                    <CheckboxText>Animals</CheckboxText>
-                </CheckboxWithText>
-                {/* <CheckboxWithText>
-                    <Checkbox
-                        type="checkbox"
-                        checked={settings.numbers}
-                        onChange={toggleNumbers}
-                    ></Checkbox>
-                    <CheckboxText>Numbers</CheckboxText>
-                </CheckboxWithText>
-                <CheckboxWithText>
-                    <Checkbox
-                        type="checkbox"
-                        checked={settings.color}
-                        onChange={toggleColor}
-                    ></Checkbox>
-                    <CheckboxText>Colors</CheckboxText>
-                </CheckboxWithText> */}
-            </SettingBox>
             <MapInteractionCSS maxScale={6} minScale={0.95} showControls={true}>
                 <StyledSvg
                     xmlns="http://www.w3.org/2000/svg"
                     xmlnsXlink="http://www.w3.org/1999/xlink"
                     viewBox="0 0 772 887"
+                    ref={svgRef}
+                    onClick={getCursorPoint}
                 >
-                    {/* <title>ZoneMapping</title> */}
                     <g id="Layer_1" data-name="Layer 1">
                         <image
                             width="772"
@@ -200,47 +161,108 @@ function BserMap({ setSelectedItem }) {
                             }
                         />
                     </g>
-                    {settings.animals &&
-                        animals.map((animal) => (
-                            <image
-                                xlinkHref={
-                                    process.env.PUBLIC_URL +
-                                    `/images/animals/${animal.code}.png`
-                                }
-                                x={parseFloat(animal.coords[0]) - 25 / 2}
-                                y={parseFloat(animal.coords[1]) - 25 / 2}
-                                width={25}
-                                height={25}
-                            />
-                        ))}
-                    {boxes.map((box) =>
-                        settings.numbers ? (
-                            <StyledText
-                                transform={`translate(${box.coords[0]} ${box.coords[1]} )`}
-                                zone={box.zone}
-                                isColorEnabled={settings.color}
-                                onClick={() => {
-                                    setSelectedItem(box);
-                                }}
-                                onTouchEnd={() => {
-                                    setSelectedItem(box);
-                                }}
-                            >
-                                {box.quantity}
-                            </StyledText>
-                        ) : (
+                    {settings.collectables.state &&
+                        collectables
+                            .filter(({ code }) => {
+                                return settings.collectables[code];
+                            })
+                            .map((collectable) => (
+                                <StyledImage
+                                    xlinkHref={
+                                        process.env.PUBLIC_URL +
+                                        `/images/items/${collectable.code}.png`
+                                    }
+                                    x={
+                                        parseFloat(collectable.coords[0]) -
+                                        15 / 2
+                                    }
+                                    y={
+                                        parseFloat(collectable.coords[1]) -
+                                        15 / 2
+                                    }
+                                    width={15}
+                                    height={15}
+                                    onClick={() => {
+                                        setSelectedItem(
+                                            collectable,
+                                            itemTypes.COLLECTABLES
+                                        );
+                                    }}
+                                />
+                            ))}
+                    {settings.spawns.state &&
+                        spawns.map((spawn) => (
                             <StyledCircle
-                                cx={parseFloat(box.coords[0]) + 3}
-                                cy={parseFloat(box.coords[1]) - 3}
+                                cx={parseFloat(spawn.coords[0])}
+                                cy={parseFloat(spawn.coords[1])}
                                 r="2.5"
-                                isColorEnabled={settings.color}
-                                zone={box.zone}
+                                zone={spawn.zone}
+                                isBorderColorEnabled={true}
                                 onClick={() => {
-                                    setSelectedItem(box);
+                                    setSelectedItem(spawn, itemTypes.SPAWNS);
                                 }}
                             ></StyledCircle>
-                        )
-                    )}
+                        ))}
+                    {settings.animals.state &&
+                        animals
+                            .filter(({ code }) => {
+                                return settings.animals[code];
+                            })
+                            .map((animal) => {
+                                return (
+                                    <StyledImage
+                                        xlinkHref={
+                                            process.env.PUBLIC_URL +
+                                            `/images/animals/${animal.code}.png`
+                                        }
+                                        x={
+                                            parseFloat(animal.coords[0]) -
+                                            25 / 2
+                                        }
+                                        y={
+                                            parseFloat(animal.coords[1]) -
+                                            25 / 2
+                                        }
+                                        width={25}
+                                        height={25}
+                                        onClick={() => {
+                                            setSelectedItem(
+                                                animal,
+                                                itemTypes.ANIMALS
+                                            );
+                                        }}
+                                    />
+                                );
+                            })}
+                    {settings.boxes.state &&
+                        boxes.map((box) =>
+                            settings.numbers.state ? (
+                                <StyledText
+                                    transform={`translate(${box.coords[0]} ${box.coords[1]} )`}
+                                    zone={box.zone}
+                                    isColorEnabled={settings.color.state}
+                                    onClick={() => {
+                                        setSelectedItem(box, itemTypes.BOXES);
+                                    }}
+                                    onTouchEnd={() => {
+                                        setSelectedItem(box, itemTypes.BOXES);
+                                    }}
+                                >
+                                    {box.quantity}
+                                </StyledText>
+                            ) : (
+                                <StyledCircle
+                                    cx={parseFloat(box.coords[0]) + 3}
+                                    cy={parseFloat(box.coords[1]) - 3}
+                                    r="2.5"
+                                    isColorEnabled={settings.color.state}
+                                    zone={box.zone}
+                                    onClick={() => {
+                                        setSelectedItem(box, itemTypes.BOXES);
+                                    }}
+                                ></StyledCircle>
+                            )
+                        )}
                 </StyledSvg>
             </MapInteractionCSS>
         </MapDiv>

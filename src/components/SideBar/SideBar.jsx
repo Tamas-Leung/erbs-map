@@ -12,6 +12,11 @@ import "tippy.js/dist/tippy.css";
 import { device } from "../../utils/device";
 import SettingsContext from "../Context/SettingsContext";
 import { useContext } from "react";
+import { itemTypes } from "../../enums/itemTypes";
+import animalName from "../../data/animalName.json";
+import animalToGroups from "../../data/animalToGroups.json";
+import animalDropChance from "../../data/animalDropChance.json";
+import codeToName from "../../data/codeToName.json";
 
 const SidebarBox = styled.div`
     width: 25%;
@@ -38,7 +43,8 @@ const Header = styled.h1`
 const Text = styled.p`
     font-size: 1rem;
     margin: 0.2rem 0px;
-    color: hsl(0, 0%, 60%);
+    color: ${({ color }) => (color ? color : "hsl(0, 0%, 60%)")};
+    font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : "")};
 `;
 
 const Subtitle = styled.h2`
@@ -55,7 +61,7 @@ const ItemHolderBox = styled.div`
 const ItemWithPercentages = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: ${({ alignItems }) => (alignItems ? alignItems : "start")};
 `;
 
 const SubSubTitle = styled.h3`
@@ -79,288 +85,321 @@ const Info = styled.h3`
     color: hsl(0, 0%, 87%);
 `;
 
-function SideBar({ selectedItem }) {
+const CreateSideBarSection = ({ selectedItem }) => {
     const { settings } = useContext(SettingsContext);
 
-    const area = areas[selectedItem.area];
-    const itemCount = areaItemCount[selectedItem.area];
-    let areaItem = 0;
-    const zoneItem = [];
-    let mandatoryCount = 0;
-    let leftoverCount = 0;
+    if (selectedItem.type === itemTypes.BOXES) {
+        const area = areas[selectedItem.area];
+        const itemCount = areaItemCount[selectedItem.area];
+        let areaItem = 0;
+        const zoneItem = [];
+        let mandatoryCount = 0;
+        let leftoverCount = 0;
 
-    for (const box of boxes) {
-        if (box.area !== selectedItem.area) continue;
-        areaItem += box.quantity;
+        for (const box of boxes) {
+            if (box.area !== selectedItem.area) continue;
+            areaItem += box.quantity;
 
-        zoneItem[box.zone] = (zoneItem[box.zone] || 0) + box.quantity;
-    }
+            zoneItem[box.zone] = (zoneItem[box.zone] || 0) + box.quantity;
+        }
 
-    for (const item in itemCount) {
-        const quantity = itemCount[item];
+        for (const item in itemCount) {
+            const quantity = itemCount[item];
 
-        mandatoryCount += Math.floor(quantity / 5);
-        leftoverCount += quantity % 5;
-    }
+            mandatoryCount += Math.floor(quantity / 5);
+            leftoverCount += quantity % 5;
+        }
 
-    const zoneLeftovers = zoneItem.map((zone, index) => {
-        if (index === 0) return zone;
-        return zone - mandatoryCount;
-    });
+        const zoneLeftovers = zoneItem.map((zone, index) => {
+            if (index === 0) return zone;
+            return zone - mandatoryCount;
+        });
 
-    const zoneName = selectedItem.zone
-        ? `Zone ${selectedItem.zone}`
-        : `Zoneless`;
+        const zoneName = selectedItem.zone
+            ? `Zone ${selectedItem.zone}`
+            : `Zoneless`;
 
-    return (
-        <SidebarBox>
-            <Header>ERBS Map</Header>
-            {selectedItem.area ? (
-                selectedItem.area && (
+        return (
+            <>
+                <Subtitle>{area.englishName}</Subtitle>
+                <Text>Items: {areaItem}</Text>
+                <ItemHolderBox>
+                    {Object.keys(itemCount).map((item) => {
+                        const count = itemCount[item];
+
+                        return <BserItem item={item} quantity={count} />;
+                    })}
+                </ItemHolderBox>
+                {/* <Text>Items per zone: {mandatoryCount}</Text>
+                    <ItemHolderBox>
+                        {Object.keys(itemCount).map((item) => {
+                            const count = Math.floor(itemCount[item] / 5);
+
+                            if (count === 0) return <></>;
+
+                            return <BserItem item={item} quantity={count} />;
+                        })}
+                    </ItemHolderBox>
+                    <Text>Leftovers: {leftoverCount}</Text>
+                    <ItemHolderBox>
+                        {Object.keys(itemCount).map((item) => {
+                            const count = itemCount[item] % 5;
+
+                            if (count === 0) return <></>;
+
+                            return <BserItem item={item} quantity={count} />;
+                        })}
+                    </ItemHolderBox> */}
+                <Subtitle
+                    color={
+                        settings.color.state
+                            ? zoneColors[selectedItem.zone]
+                            : null
+                    }
+                >
+                    {zoneName}
+                </Subtitle>
+                {/* <Subtitle>
+                    {selectedItem.coords[0] +
+                        ", " +
+                        selectedItem.coords[1]}
+                </Subtitle> */}
+
+                {selectedItem.zone ? (
                     <>
-                        <Subtitle>{area.englishName}</Subtitle>
-                        <Text>Items: {areaItem}</Text>
+                        <Text>
+                            Items in Zone: {zoneItem[selectedItem.zone]}
+                        </Text>
+                        <Text>Extras: {zoneLeftovers[selectedItem.zone]}</Text>
+
+                        <SubSubtitleWithQuestionTooltip>
+                            <SubSubTitle>Item Chance in Zone</SubSubTitle>
+                            <Tippy
+                                arrow={true}
+                                content={
+                                    <span>
+                                        All percentages are <b>estimates</b> due
+                                        to the complex nature of the boxes.
+                                        Zones with higher number of boxes will
+                                        have higher chances than the estimate
+                                    </span>
+                                }
+                            >
+                                <div>
+                                    <QuestionTooltip />
+                                </div>
+                            </Tippy>
+                        </SubSubtitleWithQuestionTooltip>
+
                         <ItemHolderBox>
                             {Object.keys(itemCount).map((item) => {
-                                const count = itemCount[item];
+                                const count = itemCount[item] % 5;
+
+                                const mandatory =
+                                    selectedItem.zone !== 0
+                                        ? Math.floor(itemCount[item] / 5)
+                                        : 0;
+
+                                const chances = {};
+
+                                if (mandatory > 0) chances[mandatory] = 100;
+
+                                let currentExtra = 0;
+
+                                while (true) {
+                                    currentExtra++;
+                                    const chance =
+                                        1 -
+                                        cdf(
+                                            currentExtra,
+                                            leftoverCount,
+                                            count,
+                                            zoneLeftovers[selectedItem.zone]
+                                        ) +
+                                        pmf(
+                                            currentExtra,
+                                            leftoverCount,
+                                            count,
+                                            zoneLeftovers[selectedItem.zone]
+                                        );
+
+                                    if (chance <= 0.01 || currentExtra >= 4)
+                                        break;
+
+                                    chances[currentExtra + mandatory] = (
+                                        chance * 100
+                                    ).toFixed(0);
+                                }
 
                                 return (
-                                    <BserItem item={item} quantity={count} />
+                                    <ItemWithPercentages>
+                                        <BserItem item={item} />
+                                        {Object.keys(chances).map(
+                                            (quantity) => {
+                                                return (
+                                                    <Text>
+                                                        {quantity}:
+                                                        {chances[quantity]}%
+                                                    </Text>
+                                                );
+                                            }
+                                        )}
+                                    </ItemWithPercentages>
                                 );
                             })}
                         </ItemHolderBox>
-                        {/* <Text>Items per zone: {mandatoryCount}</Text>
-                            <ItemHolderBox>
-                                {Object.keys(itemCount).map((item) => {
-                                    const count = Math.floor(itemCount[item] / 5);
-        
-                                    if (count === 0) return <></>;
-        
-                                    return <BserItem item={item} quantity={count} />;
-                                })}
-                            </ItemHolderBox>
-                            <Text>Leftovers: {leftoverCount}</Text>
-                            <ItemHolderBox>
-                                {Object.keys(itemCount).map((item) => {
-                                    const count = itemCount[item] % 5;
-        
-                                    if (count === 0) return <></>;
-        
-                                    return <BserItem item={item} quantity={count} />;
-                                })}
-                            </ItemHolderBox> */}
-                        <Subtitle
-                            color={
-                                settings.color
-                                    ? zoneColors[selectedItem.zone]
-                                    : null
-                            }
-                        >
-                            {zoneName}
-                        </Subtitle>
-                        {/* <Subtitle>
-                            {selectedItem.coords[0] +
-                                ", " +
-                                selectedItem.coords[1]}
-                        </Subtitle> */}
-
-                        {selectedItem.zone ? (
-                            <>
-                                <Text>
-                                    Items in Zone: {zoneItem[selectedItem.zone]}
-                                </Text>
-                                <Text>
-                                    Extras: {zoneLeftovers[selectedItem.zone]}
-                                </Text>
-
-                                <SubSubtitleWithQuestionTooltip>
-                                    <SubSubTitle>
-                                        Item Chance in Zone
-                                    </SubSubTitle>
-                                    <Tippy
-                                        arrow={true}
-                                        content={
-                                            <span>
-                                                All percentages are{" "}
-                                                <b>estimates</b> due to the
-                                                complex nature of the boxes.
-                                                Zones with higher number of
-                                                boxes will have higher chances
-                                                than the estimate
-                                            </span>
-                                        }
-                                    >
-                                        <div>
-                                            <QuestionTooltip />
-                                        </div>
-                                    </Tippy>
-                                </SubSubtitleWithQuestionTooltip>
-
-                                <ItemHolderBox>
-                                    {Object.keys(itemCount).map((item) => {
-                                        const count = itemCount[item] % 5;
-
-                                        const mandatory =
-                                            selectedItem.zone !== 0
-                                                ? Math.floor(
-                                                      itemCount[item] / 5
-                                                  )
-                                                : 0;
-
-                                        const chances = {};
-
-                                        if (mandatory > 0)
-                                            chances[mandatory] = 100;
-
-                                        let currentExtra = 0;
-
-                                        while (true) {
-                                            currentExtra++;
-                                            const chance =
-                                                1 -
-                                                cdf(
-                                                    currentExtra,
-                                                    leftoverCount,
-                                                    count,
-                                                    zoneLeftovers[
-                                                        selectedItem.zone
-                                                    ]
-                                                ) +
-                                                pmf(
-                                                    currentExtra,
-                                                    leftoverCount,
-                                                    count,
-                                                    zoneLeftovers[
-                                                        selectedItem.zone
-                                                    ]
-                                                );
-
-                                            if (
-                                                chance <= 0.01 ||
-                                                currentExtra >= 4
-                                            )
-                                                break;
-
-                                            chances[currentExtra + mandatory] =
-                                                (chance * 100).toFixed(0);
-                                        }
-
-                                        return (
-                                            <ItemWithPercentages>
-                                                <BserItem item={item} />
-                                                {Object.keys(chances).map(
-                                                    (quantity) => {
-                                                        return (
-                                                            <Text>
-                                                                {quantity}:
-                                                                {
-                                                                    chances[
-                                                                        quantity
-                                                                    ]
-                                                                }
-                                                                %
-                                                            </Text>
-                                                        );
-                                                    }
-                                                )}
-                                            </ItemWithPercentages>
-                                        );
-                                    })}
-                                </ItemHolderBox>
-                            </>
-                        ) : (
-                            <>
-                                <Text>
-                                    Leftovers: {zoneItem[selectedItem.zone]}
-                                </Text>
-                                <SubSubtitleWithQuestionTooltip>
-                                    <SubSubTitle>
-                                        Item Chance in Selected Box
-                                    </SubSubTitle>
-                                    <Tippy
-                                        arrow={true}
-                                        content={
-                                            <span>
-                                                All percentages are{" "}
-                                                <b>estimates</b> due to the
-                                                complex nature of the boxes.
-                                                Expect the chance to be higher
-                                                than listed.
-                                            </span>
-                                        }
-                                    >
-                                        <div>
-                                            <QuestionTooltip />
-                                        </div>
-                                    </Tippy>
-                                </SubSubtitleWithQuestionTooltip>
-                                <ItemHolderBox>
-                                    {Object.keys(itemCount).map((item) => {
-                                        const count = itemCount[item] % 5;
-
-                                        if (count === 0) return <></>;
-
-                                        const chances = {};
-
-                                        let currentExtra = 0;
-
-                                        while (true) {
-                                            currentExtra++;
-                                            const chance =
-                                                1 -
-                                                cdf(
-                                                    currentExtra,
-                                                    leftoverCount,
-                                                    count,
-                                                    selectedItem.quantity
-                                                ) +
-                                                pmf(
-                                                    currentExtra,
-                                                    leftoverCount,
-                                                    count,
-                                                    selectedItem.quantity
-                                                );
-
-                                            if (
-                                                chance <= 0.01 ||
-                                                currentExtra >= 2
-                                            )
-                                                break;
-
-                                            chances[currentExtra] = (
-                                                chance * 100
-                                            ).toFixed(0);
-                                        }
-
-                                        return (
-                                            <ItemWithPercentages>
-                                                <BserItem item={item} />
-                                                {Object.keys(chances).map(
-                                                    (quantity) => {
-                                                        return (
-                                                            <Text>
-                                                                {quantity}:
-                                                                {
-                                                                    chances[
-                                                                        quantity
-                                                                    ]
-                                                                }
-                                                                %
-                                                            </Text>
-                                                        );
-                                                    }
-                                                )}
-                                            </ItemWithPercentages>
-                                        );
-                                    })}
-                                </ItemHolderBox>
-                            </>
-                        )}
                     </>
-                )
-            ) : (
-                <Info>Select a box to start</Info>
-            )}
+                ) : (
+                    <>
+                        <Text>Leftovers: {zoneItem[selectedItem.zone]}</Text>
+                        <SubSubtitleWithQuestionTooltip>
+                            <SubSubTitle>
+                                Item Chance in Selected Box
+                            </SubSubTitle>
+                            <Tippy
+                                arrow={true}
+                                content={
+                                    <span>
+                                        All percentages are <b>estimates</b> due
+                                        to the complex nature of the boxes.
+                                        Expect the chance to be higher than
+                                        listed.
+                                    </span>
+                                }
+                            >
+                                <div>
+                                    <QuestionTooltip />
+                                </div>
+                            </Tippy>
+                        </SubSubtitleWithQuestionTooltip>
+                        <ItemHolderBox>
+                            {Object.keys(itemCount).map((item) => {
+                                const count = itemCount[item] % 5;
+
+                                if (count === 0) return <></>;
+
+                                const chances = {};
+
+                                let currentExtra = 0;
+
+                                while (true) {
+                                    currentExtra++;
+                                    const chance =
+                                        1 -
+                                        cdf(
+                                            currentExtra,
+                                            leftoverCount,
+                                            count,
+                                            selectedItem.quantity
+                                        ) +
+                                        pmf(
+                                            currentExtra,
+                                            leftoverCount,
+                                            count,
+                                            selectedItem.quantity
+                                        );
+
+                                    if (chance <= 0.01 || currentExtra >= 2)
+                                        break;
+
+                                    chances[currentExtra] = (
+                                        chance * 100
+                                    ).toFixed(0);
+                                }
+
+                                return (
+                                    <ItemWithPercentages>
+                                        <BserItem item={item} />
+                                        {Object.keys(chances).map(
+                                            (quantity) => {
+                                                return (
+                                                    <Text>
+                                                        {quantity}:
+                                                        {chances[quantity]}%
+                                                    </Text>
+                                                );
+                                            }
+                                        )}
+                                    </ItemWithPercentages>
+                                );
+                            })}
+                        </ItemHolderBox>
+                    </>
+                )}
+            </>
+        );
+    } else if (selectedItem.type === itemTypes.ANIMALS) {
+        const area = areas[selectedItem.area];
+        return (
+            <>
+                <Subtitle>
+                    {area.englishName} {animalName[selectedItem.code]}
+                </Subtitle>
+                {animalToGroups[selectedItem.code].map(
+                    ({ group, groupName }) => (
+                        <>
+                            <Subtitle>{groupName}</Subtitle>
+                            <ItemHolderBox>
+                                {animalDropChance[group].map(
+                                    ({ code, probability }) => (
+                                        <ItemWithPercentages
+                                            alignItems={"center"}
+                                        >
+                                            <BserItem item={code} />
+                                            <Text
+                                                fontWeight={
+                                                    probability === "100"
+                                                        ? 700
+                                                        : null
+                                                }
+                                            >
+                                                {probability}%
+                                            </Text>
+                                        </ItemWithPercentages>
+                                    )
+                                )}
+                            </ItemHolderBox>
+                        </>
+                    )
+                )}
+            </>
+        );
+    } else if (selectedItem.type === itemTypes.SPAWNS) {
+        const area = areas[selectedItem.area];
+
+        return (
+            <>
+                <Subtitle>{area.englishName} Spawn</Subtitle>
+                <Subtitle
+                    color={
+                        settings.color.state
+                            ? zoneColors[selectedItem.zone]
+                            : null
+                    }
+                >
+                    Zone {selectedItem.zone}
+                </Subtitle>
+            </>
+        );
+    } else if (selectedItem.type === itemTypes.COLLECTABLES) {
+        const area = areas[selectedItem.area];
+
+        return (
+            <>
+                <Subtitle>{area.englishName} Collectable</Subtitle>
+                <Subtitle>{codeToName[selectedItem.code]}</Subtitle>
+            </>
+        );
+    } else {
+        return <Info>Select a Box/Animal/Spawn/Collectable to start</Info>;
+    }
+};
+
+function SideBar({ selectedItem }) {
+    return (
+        <SidebarBox>
+            <Header>ERBS Map</Header>
+            <CreateSideBarSection selectedItem={selectedItem} />
         </SidebarBox>
     );
 }

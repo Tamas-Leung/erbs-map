@@ -1,0 +1,62 @@
+{
+    "1": [
+        {
+            "group": "101",
+            "groupName": "All Levels"
+        }
+    ],
+    "2": [
+        {
+            "group": "102",
+            "groupName": "All Levels"
+        }
+    ],
+    "3": [
+        {
+            "group": "103",
+            "groupName": "All Levels"
+        }
+    ],
+    "4": [
+        {
+            "group": "104",
+            "groupName": "All Levels"
+        }
+    ],
+    "5": [
+        {
+            "group": "105",
+            "groupName": "Level 3"
+        },
+        {
+            "group": "109",
+            "groupName": "Level 4+"
+        }
+    ],
+    "6": [
+        {
+            "group": "106",
+            "groupName": "Level 5"
+        },
+        {
+            "group": "108",
+            "groupName": "Level 6+"
+        }
+    ],
+    "7": [
+        {
+            "group": "107",
+            "groupName": "All Levels"
+        }
+    ],
+    "8": [
+        {
+            "group": "110",
+            "groupName": "Alpha"
+        },
+        {
+            "group": "111",
+            "groupName": "Omega"
+        }
+    ]
+}

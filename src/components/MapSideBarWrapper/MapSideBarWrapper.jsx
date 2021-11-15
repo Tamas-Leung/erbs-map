@@ -15,7 +15,12 @@ const Wrapper = styled.div`
 `;
 
 function MapSideBarWrapper() {
-    const [selectedItem, setSelectedItem] = useState({});
+    const [selectedItem, setSelectedItemState] = useState({});
+
+    const setSelectedItem = (item, type) => {
+        item.type = type;
+        setSelectedItemState(item);
+    };
 
     return (
         <SettingsProvider>

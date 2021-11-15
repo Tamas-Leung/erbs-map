@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import codeToName from "../../data/codeToName.json";
+import Tippy from "@tippyjs/react";
 
 const GradeColor = {
     Common: {
@@ -69,14 +70,20 @@ function BserItem({ item, quantity, size }) {
     let imgSrc = process.env.PUBLIC_URL + "/images/items/" + item + ".png";
 
     return (
-        <Item>
-            <ImageColorBackground grade={"Common"} size={size}>
-                <AltTextFontWrapper>
-                    <StyledImg grade={"Common"} src={imgSrc} alt={itemName} />
-                </AltTextFontWrapper>
-                {quantity && <QuantityText>{quantity}</QuantityText>}
-            </ImageColorBackground>
-        </Item>
+        <Tippy arrow={true} content={<span>{itemName}</span>}>
+            <Item>
+                <ImageColorBackground grade={"Common"} size={size}>
+                    <AltTextFontWrapper>
+                        <StyledImg
+                            grade={"Common"}
+                            src={imgSrc}
+                            alt={itemName}
+                        />
+                    </AltTextFontWrapper>
+                    {quantity && <QuantityText>{quantity}</QuantityText>}
+                </ImageColorBackground>
+            </Item>
+        </Tippy>
     );
 }
 

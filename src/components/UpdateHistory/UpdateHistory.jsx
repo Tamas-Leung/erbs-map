@@ -32,6 +32,16 @@ const ChangesListItem = styled.li`
 
 const historyData = [
     {
+        date: "2021/11/14",
+        changes: [
+            "Updated to Patch 0.45.0",
+            "Added Collectables and Spawns",
+            "Added nested toggles for Animals and Collectables",
+            "Added Animal drop chances",
+            "Added tooltip to item hovering",
+        ],
+    },
+    {
         date: "2021/11/06",
         changes: [
             "Updated to Patch 0.44.0",
