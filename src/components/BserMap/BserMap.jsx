@@ -24,7 +24,7 @@ export const zoneColors = {
 const StyledSvg = styled.svg`
     width: 100%;
     height: calc(100vh - 4px);
-    @media ${device.mobileLMax} {
+    @media ${device.tabletMax} {
         height: calc(60vh - 4px);
     }
 `;
@@ -168,6 +168,12 @@ function BserMap({ setSelectedItem }) {
                             })
                             .map((collectable) => (
                                 <StyledImage
+                                    key={
+                                        collectable.code +
+                                        collectable.area +
+                                        collectable.coords[0] +
+                                        collectable.coords[1]
+                                    }
                                     xlinkHref={
                                         process.env.PUBLIC_URL +
                                         `/images/items/${collectable.code}.png`
@@ -199,6 +205,12 @@ function BserMap({ setSelectedItem }) {
                     {settings.spawns.state &&
                         spawns.map((spawn) => (
                             <StyledCircle
+                                key={
+                                    spawn.zone +
+                                    spawn.area +
+                                    spawn.coords[0] +
+                                    spawn.coords[1]
+                                }
                                 cx={parseFloat(spawn.coords[0])}
                                 cy={parseFloat(spawn.coords[1])}
                                 r="2.5"
@@ -220,6 +232,12 @@ function BserMap({ setSelectedItem }) {
                             .map((animal) => {
                                 return (
                                     <StyledImage
+                                        key={
+                                            animal.code +
+                                            animal.area +
+                                            animal.coords[0] +
+                                            animal.coords[1]
+                                        }
                                         xlinkHref={
                                             process.env.PUBLIC_URL +
                                             `/images/animals/${animal.code}.png`
@@ -253,6 +271,12 @@ function BserMap({ setSelectedItem }) {
                         boxes.map((box) =>
                             settings.numbers.state ? (
                                 <StyledText
+                                    key={
+                                        box.area +
+                                        box.zone +
+                                        box.coords[0] +
+                                        box.coords[1]
+                                    }
                                     transform={`translate(${box.coords[0]} ${box.coords[1]} )`}
                                     zone={box.zone}
                                     isColorEnabled={settings.color.state}
@@ -267,6 +291,12 @@ function BserMap({ setSelectedItem }) {
                                 </StyledText>
                             ) : (
                                 <StyledCircle
+                                    key={
+                                        box.area +
+                                        box.zone +
+                                        box.coords[0] +
+                                        box.coords[1]
+                                    }
                                     cx={parseFloat(box.coords[0]) + 3}
                                     cy={parseFloat(box.coords[1]) - 3}
                                     r="2.5"

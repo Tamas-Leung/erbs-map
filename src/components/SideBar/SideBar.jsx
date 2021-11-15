@@ -28,8 +28,9 @@ const SidebarBox = styled.div`
     align-items: start;
     height: 100vh;
     overflow-y: auto;
+    min-width: 16rem;
 
-    @media ${device.mobileLMax} {
+    @media ${device.tabletMax} {
         width: 100%;
         height: 40vh;
     }
@@ -127,7 +128,9 @@ const CreateSideBarSection = ({ selectedItem }) => {
                     {Object.keys(itemCount).map((item) => {
                         const count = itemCount[item];
 
-                        return <BserItem item={item} quantity={count} />;
+                        return (
+                            <BserItem key={item} item={item} quantity={count} />
+                        );
                     })}
                 </ItemHolderBox>
                 {/* <Text>Items per zone: {mandatoryCount}</Text>
@@ -233,12 +236,12 @@ const CreateSideBarSection = ({ selectedItem }) => {
                                 }
 
                                 return (
-                                    <ItemWithPercentages>
+                                    <ItemWithPercentages key={item}>
                                         <BserItem item={item} />
                                         {Object.keys(chances).map(
                                             (quantity) => {
                                                 return (
-                                                    <Text>
+                                                    <Text key={quantity}>
                                                         {quantity}:
                                                         {chances[quantity]}%
                                                     </Text>
@@ -309,12 +312,12 @@ const CreateSideBarSection = ({ selectedItem }) => {
                                 }
 
                                 return (
-                                    <ItemWithPercentages>
+                                    <ItemWithPercentages key={item}>
                                         <BserItem item={item} />
                                         {Object.keys(chances).map(
                                             (quantity) => {
                                                 return (
-                                                    <Text>
+                                                    <Text key={quantity}>
                                                         {quantity}:
                                                         {chances[quantity]}%
                                                     </Text>
@@ -344,6 +347,7 @@ const CreateSideBarSection = ({ selectedItem }) => {
                                 {animalDropChance[group].map(
                                     ({ code, probability }) => (
                                         <ItemWithPercentages
+                                            key={code}
                                             alignItems={"center"}
                                         >
                                             <BserItem item={code} />

@@ -32,6 +32,13 @@ const ChangesListItem = styled.li`
 
 const historyData = [
     {
+        date: "2021/11/15",
+        changes: [
+            "Updated layout for tablet sizes",
+            "Fixed arrow expanding issues",
+        ],
+    },
+    {
         date: "2021/11/14",
         changes: [
             "Updated to Patch 0.45.0",
@@ -82,7 +89,7 @@ function UpdateHistory() {
             <HistoryTitle>Update History</HistoryTitle>
             {historyData.map(({ date, changes }) => (
                 <>
-                    <ChangeDate>{date}</ChangeDate>
+                    <ChangeDate key={date}>{date}</ChangeDate>
                     <ChangesList>
                         {changes.map((change) => (
                             <ChangesListItem>{change}</ChangesListItem>

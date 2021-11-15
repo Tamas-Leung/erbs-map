@@ -58,10 +58,12 @@ function SettingsBox() {
                 <Checkbox
                     type="checkbox"
                     checked={settings.collectables.state}
+                    readOnly={true}
                 ></Checkbox>
                 <CheckboxArrow
                     active={collectablesExpanded}
-                    onClick={() => {
+                    onClick={(e) => {
+                        e.stopPropagation();
                         setCollectablesExpanded(!collectablesExpanded);
                     }}
                 />
@@ -78,6 +80,7 @@ function SettingsBox() {
                         "401208",
                     ].map((collectable) => (
                         <CheckboxWithText
+                            key={collectable}
                             onClick={() => {
                                 toggleSetting("collectables", collectable);
                             }}
@@ -85,6 +88,7 @@ function SettingsBox() {
                             <Checkbox
                                 type="checkbox"
                                 checked={settings.collectables[collectable]}
+                                readOnly={true}
                             ></Checkbox>
                             <CheckboxText>
                                 {codeToName[collectable]}
@@ -98,6 +102,7 @@ function SettingsBox() {
                 <Checkbox
                     type="checkbox"
                     checked={settings.spawns.state}
+                    readOnly={true}
                 ></Checkbox>
                 <CheckboxText>Spawns</CheckboxText>
             </CheckboxWithText>
@@ -105,10 +110,12 @@ function SettingsBox() {
                 <Checkbox
                     type="checkbox"
                     checked={settings.animals.state}
+                    readOnly={true}
                 ></Checkbox>
                 <CheckboxArrow
                     active={animalsExpanded}
-                    onClick={() => {
+                    onClick={(e) => {
+                        e.stopPropagation();
                         setAnimalsExpanded(!animalsExpanded);
                     }}
                 />
@@ -118,11 +125,13 @@ function SettingsBox() {
                 <NestedCheckboxes>
                     {["1", "2", "3", "4", "5", "6", "7", "8"].map((animal) => (
                         <CheckboxWithText
+                            key={animal}
                             onClick={() => toggleSetting("animals", animal)}
                         >
                             <Checkbox
                                 type="checkbox"
                                 checked={settings.animals[animal]}
+                                readOnly={true}
                             ></Checkbox>
                             <CheckboxText>{animalName[animal]}</CheckboxText>
                         </CheckboxWithText>
@@ -133,6 +142,7 @@ function SettingsBox() {
                 <Checkbox
                     type="checkbox"
                     checked={settings.boxes.state}
+                    readOnly={true}
                 ></Checkbox>
                 <CheckboxText>Boxes</CheckboxText>
             </CheckboxWithText>

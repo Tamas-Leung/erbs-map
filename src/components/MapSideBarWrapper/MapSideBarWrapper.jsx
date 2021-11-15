@@ -9,7 +9,7 @@ const Wrapper = styled.div`
     display: flex;
     text-align: center;
 
-    @media ${device.mobileLMax} {
+    @media ${device.tabletMax} {
         flex-direction: column;
     }
 `;
