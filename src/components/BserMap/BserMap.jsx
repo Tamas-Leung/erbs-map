@@ -188,6 +188,12 @@ function BserMap({ setSelectedItem }) {
                                             itemTypes.COLLECTABLES
                                         );
                                     }}
+                                    onTouchEnd={() => {
+                                        setSelectedItem(
+                                            collectable,
+                                            itemTypes.COLLECTABLES
+                                        );
+                                    }}
                                 />
                             ))}
                     {settings.spawns.state &&
@@ -199,6 +205,9 @@ function BserMap({ setSelectedItem }) {
                                 zone={spawn.zone}
                                 isBorderColorEnabled={true}
                                 onClick={() => {
+                                    setSelectedItem(spawn, itemTypes.SPAWNS);
+                                }}
+                                onTouchEnd={() => {
                                     setSelectedItem(spawn, itemTypes.SPAWNS);
                                 }}
                             ></StyledCircle>
@@ -231,6 +240,12 @@ function BserMap({ setSelectedItem }) {
                                                 itemTypes.ANIMALS
                                             );
                                         }}
+                                        onTouchEnd={() => {
+                                            setSelectedItem(
+                                                animal,
+                                                itemTypes.ANIMALS
+                                            );
+                                        }}
                                     />
                                 );
                             })}
@@ -258,6 +273,9 @@ function BserMap({ setSelectedItem }) {
                                     isColorEnabled={settings.color.state}
                                     zone={box.zone}
                                     onClick={() => {
+                                        setSelectedItem(box, itemTypes.BOXES);
+                                    }}
+                                    onTouchEnd={() => {
                                         setSelectedItem(box, itemTypes.BOXES);
                                     }}
                                 ></StyledCircle>
