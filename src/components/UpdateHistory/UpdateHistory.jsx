@@ -32,6 +32,15 @@ const ChangesListItem = styled.li`
 
 const historyData = [
     {
+        date: "2021/11/25",
+        changes: [
+            "Updated to Patch 0.46.0",
+            "Updated drop chances of Bears",
+            "Updated animal locations for New Alpha/Omega Spawns",
+            "Added Help Guide",
+        ],
+    },
+    {
         date: "2021/11/15",
         changes: [
             "Updated layout for tablet sizes",

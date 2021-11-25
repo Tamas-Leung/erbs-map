@@ -28,7 +28,8 @@
         "eject": "react-scripts eject",
         "predeploy": "npm run build",
         "deploy": "gh-pages -d build",
-        "extract-points": "node  --experimental-json-modules ./src/scripts/newScripts/extractPoints.js"
+        "extract-points": "node  --experimental-json-modules ./src/scripts/newScripts/extractPoints.js",
+        "update": "node --experimental-json-modules src/scripts/updateAnimalDropChances.js"
     },
     "eslintConfig": {
         "extends": [

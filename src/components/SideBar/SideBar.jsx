@@ -7,16 +7,17 @@ import cdf from "@stdlib/stats-base-dists-hypergeometric-cdf";
 import pmf from "@stdlib/stats-base-dists-hypergeometric-pmf";
 import { zoneColors } from "../BserMap/BserMap";
 import Tippy from "@tippyjs/react";
-import { AiOutlineQuestionCircle } from "react-icons/ai";
+import { AiOutlineQuestionCircle, AiOutlineClose } from "react-icons/ai";
 import "tippy.js/dist/tippy.css";
 import { device } from "../../utils/device";
 import SettingsContext from "../Context/SettingsContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { itemTypes } from "../../enums/itemTypes";
 import animalName from "../../data/animalName.json";
 import animalToGroups from "../../data/animalToGroups.json";
 import animalDropChance from "../../data/animalDropChance.json";
 import codeToName from "../../data/codeToName.json";
+import Modal from "../Modal";
 
 const SidebarBox = styled.div`
     width: 25%;
@@ -400,13 +401,149 @@ const CreateSideBarSection = ({ selectedItem }) => {
     }
 };
 
+const HeaderBox = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+`;
+
+const QuestionIcon = styled(AiOutlineQuestionCircle)`
+    color: hsl(0, 0%, 60%);
+    height: 100%;
+    width: 2rem;
+
+    :hover {
+        color: hsl(0, 0%, 87%);
+    }
+`;
+
 function SideBar({ selectedItem }) {
+    const [isHelpOpened, setHelpOpened] = useState(false);
+
     return (
         <SidebarBox>
-            <Header>ERBS Map</Header>
+            <Modal open={isHelpOpened} onClose={() => setHelpOpened(false)}>
+                <HelpModal onClose={() => setHelpOpened(false)} />
+            </Modal>
+            <HeaderBox>
+                <Header>ERBS Map</Header>
+                <QuestionIcon onClick={() => setHelpOpened(true)} />
+            </HeaderBox>
+
             <CreateSideBarSection selectedItem={selectedItem} />
         </SidebarBox>
     );
 }
+
+const HelpModalDiv = styled.div`
+    width: 90vw;
+    height: 90vh;
+    background-color: hsl(240, 5%, 30%);
+    color: hsl(0, 0%, 87%);
+    padding: 2rem;
+    border-radius: 0.5rem;
+
+    overflow-y: auto;
+`;
+
+const CloseButton = styled(AiOutlineClose)`
+    position: absolute;
+    top: 0.8rem;
+    right: 0.8rem;
+    width: 1.5rem;
+    height: 1.5rem;
+
+    color: hsl(0, 0%, 60%);
+
+    :hover {
+        color: hsl(0, 0%, 87%);
+    }
+`;
+
+const HelpTitle = styled.h2``;
+
+const StyledImg = styled.img`
+    height: ${({ height }) => height};
+    border-radius: ${({ borderRadius }) => borderRadius};
+    margin: ${({ margin }) => margin};
+    max-width: ${({ maxWidth }) => maxWidth};
+`;
+
+const HelpSubTitle = styled.h3``;
+
+const Paragraph = styled.p``;
+
+const HelpBoxes = styled.div`
+    margin-top: 1.5rem;
+`;
+
+const StyledLink = styled.a`
+    color: hsl(0, 0%, 60%);
+`;
+
+const HelpModal = ({ onClose }) => {
+    return (
+        <HelpModalDiv>
+            <CloseButton onClick={onClose} />
+            <HelpTitle>Help Guide</HelpTitle>
+            <HelpBoxes>
+                <HelpSubTitle>Boxes and Spawns</HelpSubTitle>
+                <StyledImg
+                    grade={"Common"}
+                    src={process.env.PUBLIC_URL + "/images/box_guide.png"}
+                    alt={"Box Guide"}
+                    borderRadius={"0.5rem"}
+                    height={"14rem"}
+                />
+                <Paragraph>
+                    Number on each box represents the number of items in that
+                    box. Each color represents a loot distribution zone/cluster.
+                    To learn more on loot clusters:&nbsp;
+                    <StyledLink
+                        href="https://www.youtube.com/watch?v=NCn_0UxFGM8"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        https://www.youtube.com/watch?v=NCn_0UxFGM8
+                    </StyledLink>
+                </Paragraph>
+            </HelpBoxes>
+
+            <HelpBoxes>
+                <HelpSubTitle>Additional Options</HelpSubTitle>
+                <StyledImg
+                    grade={"Common"}
+                    src={process.env.PUBLIC_URL + "/images/setting_toggles.png"}
+                    alt={"Box Guide"}
+                    borderRadius={"0.5rem"}
+                    height={"10rem"}
+                />
+                <Paragraph>
+                    Toggle options to see locations of collectables and animals.
+                    Click on Animals to see drop chances of animals!
+                </Paragraph>
+            </HelpBoxes>
+
+            <HelpBoxes>
+                <HelpSubTitle>Reading drop chances</HelpSubTitle>
+                <StyledImg
+                    grade={"Common"}
+                    src={process.env.PUBLIC_URL + "/images/drop_chances.png"}
+                    alt={"Box Guide"}
+                    borderRadius={"0.5rem"}
+                    width={"100%"}
+                    maxWidth={"40rem"}
+                />
+                <Paragraph>
+                    Drop chance are shown in form of "Quantity: Percentage".
+                    <br /> <br /> For boxes, All chances that are not 100% are
+                    estimates and not accurate. They should be used as a guide
+                    to what the real chance could be. For animals, they are all
+                    accurate.
+                </Paragraph>
+            </HelpBoxes>
+        </HelpModalDiv>
+    );
+};
 
 export default SideBar;
