@@ -32,6 +32,20 @@ const ChangesListItem = styled.li`
 
 const historyData = [
     {
+        date: "2022/01/28",
+        changes: [
+            "Updated to Patch 0.50.0",
+            "Updated With Official Loot distributions",
+            "Fixed spawn locations in certain areas",
+            "Added new Meteorite spawns",
+            "Added Supply crate drop rates",
+        ],
+    },
+    {
+        date: "2021/12/29",
+        changes: ["Updated to Patch 0.48.0"],
+    },
+    {
         date: "2021/11/25",
         changes: [
             "Updated to Patch 0.46.0",

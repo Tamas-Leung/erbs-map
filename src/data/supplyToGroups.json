@@ -1,0 +1,26 @@
+{
+    "2": [
+        {
+            "group": "201",
+            "groupName": "Uncommon"
+        }
+    ],
+    "3": [
+        {
+            "group": "202",
+            "groupName": "Rare"
+        }
+    ],
+    "4": [
+        {
+            "group": "205",
+            "groupName": "Epic"
+        }
+    ],
+    "5": [
+        {
+            "group": "208",
+            "groupName": "Legendary"
+        }
+    ]
+}

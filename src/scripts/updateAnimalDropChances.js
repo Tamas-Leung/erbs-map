@@ -37,7 +37,7 @@ async function main() {
     const itemData = {};
 
     for (const { itemCode, groupCode, probability, dropType } of data) {
-        if (!groupCode.toString().startsWith("1")) continue;
+        // if (!groupCode.toString().startsWith("1")) continue;
 
         itemData[groupCode] = [
             ...(itemData[groupCode] || []),

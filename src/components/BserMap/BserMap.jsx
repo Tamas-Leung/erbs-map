@@ -4,6 +4,7 @@ import boxes from "../../data/boxes.json";
 import animals from "../../data/animals.json";
 import spawns from "../../data/spawns.json";
 import collectables from "../../data/collectables.json";
+import supplies from "../../data/supplies.json";
 import { useState, useContext, useRef } from "react";
 import Modal from "../Modal";
 import { device } from "../../utils/device";
@@ -14,11 +15,11 @@ import { itemTypes } from "../../enums/itemTypes";
 
 export const zoneColors = {
     0: "hsl(0,0%, 85%)",
-    1: "hsl(0, 100%, 45%)",
-    2: "hsl(55, 100%, 45%)",
-    3: "hsl(120, 100%, 45%)",
-    4: "hsl(200, 100%, 45%)",
-    5: "hsl(304, 100%, 45%)",
+    1: "hsl(200, 100%, 45%)",
+    2: "hsl(120, 100%, 45%)",
+    3: "hsl(0, 100%, 45%)",
+    4: "hsl(304, 100%, 45%)",
+    5: "hsl(55, 100%, 45%)",
 };
 
 const StyledSvg = styled.svg`
@@ -142,7 +143,7 @@ function BserMap({ setSelectedItem }) {
             <SettingsBox />
             <Credits onClick={() => setIsCreditsOpen(true)}>Credits</Credits>
             <HistoryText onClick={() => setIsHistoryOpen(true)}>
-                Last Updated: Patch 0.46.0
+                Last Updated: Patch 0.50.0
             </HistoryText>
             <MapInteractionCSS maxScale={6} minScale={0.95} showControls={true}>
                 <StyledSvg
@@ -161,6 +162,26 @@ function BserMap({ setSelectedItem }) {
                             }
                         />
                     </g>
+                    {settings.supplies.state &&
+                        supplies.map((supply) => (
+                            <StyledImage
+                                key={supply.rarity}
+                                xlinkHref={
+                                    process.env.PUBLIC_URL +
+                                    `/images/supplies/${supply.rarity}.png`
+                                }
+                                x={parseFloat(supply.coords[0]) - 20 / 2}
+                                y={parseFloat(supply.coords[1]) - 20 / 2}
+                                width={20}
+                                height={20}
+                                onClick={() => {
+                                    setSelectedItem(supply, itemTypes.SUPPLIES);
+                                }}
+                                onTouchEnd={() => {
+                                    setSelectedItem(supply, itemTypes.SUPPLIES);
+                                }}
+                            />
+                        ))}
                     {settings.collectables.state &&
                         collectables
                             .filter(({ code }) => {

@@ -3,4 +3,5 @@ export const itemTypes = {
     SPAWNS: "spawns",
     COLLECTABLES: "collectables",
     ANIMALS: "animals",
+    SUPPLIES: "supplies",
 };

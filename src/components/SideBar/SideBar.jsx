@@ -16,6 +16,7 @@ import { itemTypes } from "../../enums/itemTypes";
 import animalName from "../../data/animalName.json";
 import animalToGroups from "../../data/animalToGroups.json";
 import animalDropChance from "../../data/animalDropChance.json";
+import supplyToGroups from "../../data/supplyToGroups.json";
 import codeToName from "../../data/codeToName.json";
 import Modal from "../Modal";
 
@@ -394,6 +395,42 @@ const CreateSideBarSection = ({ selectedItem }) => {
             <>
                 <Subtitle>{area.englishName} Collectable</Subtitle>
                 <Subtitle>{codeToName[selectedItem.code]}</Subtitle>
+            </>
+        );
+    } else if (selectedItem.type === itemTypes.SUPPLIES) {
+        const rarity = selectedItem.rarity;
+
+        return (
+            <>
+                <Subtitle>
+                    {supplyToGroups[rarity][0].groupName} Supply Box
+                </Subtitle>
+                {supplyToGroups[rarity].map(({ group, groupName }) => (
+                    <>
+                        <Subtitle>{groupName}</Subtitle>
+                        <ItemHolderBox>
+                            {animalDropChance[group].map(
+                                ({ code, probability }) => (
+                                    <ItemWithPercentages
+                                        key={code}
+                                        alignItems={"center"}
+                                    >
+                                        <BserItem item={code} />
+                                        <Text
+                                            fontWeight={
+                                                probability === "100"
+                                                    ? 700
+                                                    : null
+                                            }
+                                        >
+                                            {probability}%
+                                        </Text>
+                                    </ItemWithPercentages>
+                                )
+                            )}
+                        </ItemHolderBox>
+                    </>
+                ))}
             </>
         );
     } else {

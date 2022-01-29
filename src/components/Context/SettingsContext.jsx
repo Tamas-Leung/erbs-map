@@ -36,6 +36,9 @@ export const SettingsProvider = ({ children }) => {
         boxes: {
             state: true,
         },
+        supplies: {
+            state: true,
+        },
     });
 
     const toggleSetting = (setting, index) => {
