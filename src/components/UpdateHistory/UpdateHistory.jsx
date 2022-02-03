@@ -32,6 +32,13 @@ const ChangesListItem = styled.li`
 
 const historyData = [
     {
+        date: "2022/02/03",
+        changes: [
+            "Updated to Patch 0.51.0",
+            "Updated With Season 5 Official Loot distributions",
+        ],
+    },
+    {
         date: "2022/01/28",
         changes: [
             "Updated to Patch 0.50.0",
