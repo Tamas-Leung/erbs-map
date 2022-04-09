@@ -109,7 +109,7 @@ function BserMap({ setSelectedItem }) {
         cursorPoint.y = Math.round(cursorPoint.y);
 
         //For Dev purposes only
-        // console.log(cursorPoint);
+        console.log(cursorPoint);
 
         return cursorPoint;
     };

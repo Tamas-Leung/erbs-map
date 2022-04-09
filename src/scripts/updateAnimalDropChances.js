@@ -34,6 +34,10 @@ async function getData(url) {
 async function main() {
     const data = await getData(`${baseRequestURL}/v1/data/DropGroup`);
 
+    const dataLight = await getData(
+        `${baseRequestURL}/v1/data/DropGroup_Light`
+    );
+
     const itemData = {};
 
     for (const { itemCode, groupCode, probability, dropType } of data) {
@@ -41,6 +45,21 @@ async function main() {
 
         itemData[groupCode] = [
             ...(itemData[groupCode] || []),
+            {
+                code: itemCode,
+                probability: probability,
+                dropType: dropType,
+            },
+        ];
+    }
+
+    for (const { itemCode, groupCode, probability, dropType } of dataLight) {
+        if (groupCode.toString().startsWith("1")) continue;
+
+        const newGroupCode = groupCode + "L";
+
+        itemData[newGroupCode] = [
+            ...(itemData[newGroupCode] || []),
             {
                 code: itemCode,
                 probability: probability,
@@ -91,6 +110,64 @@ async function main() {
             if (err) console.log(err);
         }
     );
+
+    // const itemDataLight = {};
+
+    // for (const { itemCode, groupCode, probability, dropType } of dataLight) {
+    //     if (!groupCode.toString().startsWith("1")) continue;
+
+    //     itemDataLight[groupCode] = [
+    //         ...(itemDataLight[groupCode] || []),
+    //         {
+    //             code: itemCode,
+    //             probability: probability,
+    //             dropType: dropType,
+    //         },
+    //     ];
+    // }
+
+    // const itemProbabilitiesLight = {};
+
+    // for (const [group, items] of Object.entries(itemDataLight)) {
+    //     const totalProbability = items.reduce(
+    //         (total, item) =>
+    //             total + (item.dropType === "Random" ? item.probability : 0),
+    //         0
+    //     );
+
+    //     items.forEach((item) => {
+    //         itemProbabilitiesLight[group] = [
+    //             ...(itemProbabilitiesLight[group] || []),
+    //             {
+    //                 code: item.code,
+    //                 probability:
+    //                     item.dropType === "Random"
+    //                         ? Number(
+    //                               (item.probability / totalProbability) * 100
+    //                           ).toFixed(2)
+    //                         : "100",
+    //             },
+    //         ];
+    //     });
+    // }
+
+    // const itemProbabilitiesSortedLight = {};
+
+    // for (const [group, items] of Object.entries(itemProbabilitiesLight)) {
+    //     itemProbabilitiesSortedLight[group] = items.sort(
+    //         (a, b) => parseFloat(b.probability) - parseFloat(a.probability)
+    //     );
+    // }
+
+    // console.log(itemProbabilitiesSortedLight);
+
+    // fs.writeFile(
+    //     getDataPath("animalDropChanceLight.json"),
+    //     JSON.stringify(itemProbabilitiesSortedLight),
+    //     function (err, res) {
+    //         if (err) console.log(err);
+    //     }
+    // );
 }
 
 main();

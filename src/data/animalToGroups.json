@@ -26,21 +26,21 @@
     "5": [
         {
             "group": "105",
-            "groupName": "Level 3"
+            "groupName": "First Spawn"
         },
         {
             "group": "109",
-            "groupName": "Level 4+"
+            "groupName": "Respawns"
         }
     ],
     "6": [
         {
             "group": "106",
-            "groupName": "Level 5"
+            "groupName": "First Spawn"
         },
         {
             "group": "108",
-            "groupName": "Level 6+"
+            "groupName": "Respawns"
         }
     ],
     "7": [
