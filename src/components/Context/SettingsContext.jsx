@@ -32,6 +32,7 @@ export const SettingsProvider = ({ children }) => {
             301102: false,
             401209: false,
             401208: false,
+            205102: false,
         },
         boxes: {
             state: true,

@@ -109,7 +109,7 @@ function BserMap({ setSelectedItem }) {
         cursorPoint.y = Math.round(cursorPoint.y);
 
         //For Dev purposes only
-        console.log(cursorPoint);
+        // console.log(cursorPoint);
 
         return cursorPoint;
     };
@@ -143,7 +143,7 @@ function BserMap({ setSelectedItem }) {
             <SettingsBox />
             <Credits onClick={() => setIsCreditsOpen(true)}>Credits</Credits>
             <HistoryText onClick={() => setIsHistoryOpen(true)}>
-                Last Updated: Patch 0.51.0
+                Last Updated: Patch 0.58.0
             </HistoryText>
             <MapInteractionCSS maxScale={6} minScale={0.95} showControls={true}>
                 <StyledSvg

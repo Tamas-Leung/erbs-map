@@ -32,6 +32,22 @@ const ChangesListItem = styled.li`
 
 const historyData = [
     {
+        date: "2022/05/14",
+        changes: [
+            "Updated to Patch 0.58.0",
+            "Added flowers",
+            "Updated air drop and animal drops"
+        ],
+    },
+    {
+        date: "2022/04/27",
+        changes: [
+            "Updated to Patch 0.57.0",
+            "Air drops may be inaccurate",
+            "Animal spawns updated"
+        ],
+    },
+    {
         date: "2022/02/03",
         changes: [
             "Updated to Patch 0.51.0",

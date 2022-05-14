@@ -137,6 +137,7 @@ function SettingsBox() {
                                 "301102",
                                 "401209",
                                 "401208",
+                                "205102"
                             ].map((collectable) => (
                                 <CheckboxWithText
                                     key={collectable}

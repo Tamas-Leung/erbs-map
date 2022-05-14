@@ -330,7 +330,7 @@
     { "area": 1, "zone": 0, "coords": ["491.17", "773.54"], "quantity": 5 },
     { "area": 4, "zone": 5, "coords": ["194.29", "606.08"], "quantity": 5 },
     { "area": 4, "zone": 5, "coords": ["212.29", "607.04"], "quantity": 5 },
-    { "area": 4, "zone": 5, "coords": ["220.62", "607.04"], "quantity": 5 },
+    { "area": 4, "zone": 5, "coords": ["235.62", "596.04"], "quantity": 5 },
     { "area": 4, "zone": 5, "coords": ["231.63", "599.04"], "quantity": 5 },
     { "area": 4, "zone": 5, "coords": ["247.75", "592.38"], "quantity": 6 },
     { "area": 4, "zone": 4, "coords": ["174.79", "695.83"], "quantity": 6 },

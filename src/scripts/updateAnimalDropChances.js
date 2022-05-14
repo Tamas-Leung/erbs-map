@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import codeToName from "../data/codeToName.json";
+// import codeToName from "../data/codeToName.json";
 import fs from "fs";
 import fetch from "node-fetch";
 
@@ -40,9 +40,51 @@ async function main() {
 
     const itemData = {};
 
+    const duoItems = [
+        205504,
+        205506,
+        205409
+    ]
+
+    const soloItems = [
+        205503,
+        205408
+    ]
+
     for (const { itemCode, groupCode, probability, dropType } of data) {
         // if (!groupCode.toString().startsWith("1")) continue;
 
+        if (groupCode.toString() === "208") {
+
+            
+            if (!duoItems.includes(itemCode)) {
+                itemData[groupCode] = [
+                    ...(itemData[groupCode] || []),
+                    {
+                        code: itemCode,
+                        probability: probability,
+                        dropType: dropType,
+                    },
+                ];
+            }
+
+            if (!soloItems.includes(itemCode)) {
+                const duoGroupCode = groupCode + "M"
+                itemData[duoGroupCode] = [
+                    ...(itemData[duoGroupCode] || []),
+                    {
+                        code: itemCode,
+                        probability: probability,
+                        dropType: dropType,
+                    },
+                ];
+            }
+            
+
+            continue
+
+        }
+        
         itemData[groupCode] = [
             ...(itemData[groupCode] || []),
             {
@@ -51,6 +93,7 @@ async function main() {
                 dropType: dropType,
             },
         ];
+
     }
 
     for (const { itemCode, groupCode, probability, dropType } of dataLight) {
