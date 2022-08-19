@@ -3,24 +3,40 @@
         {
             "group": "101",
             "groupName": "All Levels"
+        },
+        {
+            "group": "301",
+            "groupName": "Mutant"
         }
     ],
     "2": [
         {
             "group": "102",
             "groupName": "All Levels"
+        },
+        {
+            "group": "302",
+            "groupName": "Mutant"
         }
     ],
     "3": [
         {
             "group": "103",
             "groupName": "All Levels"
+        },
+        {
+            "group": "303",
+            "groupName": "Mutant"
         }
     ],
     "4": [
         {
             "group": "104",
             "groupName": "All Levels"
+        },
+        {
+            "group": "304",
+            "groupName": "Mutant"
         }
     ],
     "5": [
@@ -31,6 +47,14 @@
         {
             "group": "109",
             "groupName": "Level 10+"
+        },
+        {
+            "group": "305",
+            "groupName": "Mutant"
+        },
+        {
+            "group": "305",
+            "groupName": "Mutant Level 10+"
         }
     ],
     "6": [
@@ -41,6 +65,14 @@
         {
             "group": "108",
             "groupName": "Level 15+"
+        },
+        {
+            "group": "306",
+            "groupName": "Mutant"
+        },
+        {
+            "group": "308",
+            "groupName": "Mutant Level 15+"
         }
     ],
     "7": [
