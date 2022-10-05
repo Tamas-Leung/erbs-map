@@ -32,6 +32,12 @@ const ChangesListItem = styled.li`
 
 const historyData = [
   {
+    date: "2022/10/4",
+    changes: [
+      "Update to Patch 0.68"
+    ],
+  },
+  {
     date: "2022/08/23",
     changes: [
       "Fixed temple boxes"

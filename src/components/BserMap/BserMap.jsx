@@ -131,7 +131,7 @@ function BserMap({ setSelectedItem }) {
       <SettingsBox />
       <Credits onClick={() => setIsCreditsOpen(true)}>Credits</Credits>
       <HistoryText onClick={() => setIsHistoryOpen(true)}>
-        Last Updated: Patch 0.65.0
+        Last Updated: Patch 0.68.0
       </HistoryText>
       <MapInteractionCSS maxScale={6} minScale={0.95} showControls={true}>
         <StyledSvg
