@@ -13,7 +13,7 @@
     ],
     "4": [
         {
-            "group": "204",
+            "group": "205",
             "groupName": "Epic"
         }
     ],
@@ -21,10 +21,6 @@
         {
             "group": "208",
             "groupName": "Legendary"
-        },
-        {
-            "group": "208M",
-            "groupName": "Legendary (Duo/Squad)"
         }
     ]
 }
