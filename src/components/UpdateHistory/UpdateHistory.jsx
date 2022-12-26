@@ -32,6 +32,12 @@ const ChangesListItem = styled.li`
 
 const historyData = [
   {
+    date: "2022/12/26",
+    changes: [
+      "Update to Patch 0.74"
+    ],
+  },
+  {
     date: "2022/10/4",
     changes: [
       "Update to Patch 0.68"
